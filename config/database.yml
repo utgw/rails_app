@@ -20,6 +20,13 @@ default: &default
 development:
   <<: *default
   database: rails_app_development
+
+production:
+  <<: *default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
 # インデントは必ず半角スペース２つ
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -27,7 +34,6 @@ development:
 test:
   <<: *default
   database: rails_app_test
-
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
 # ever seen by anyone, they now have access to your database.
@@ -48,8 +54,9 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
-production:
-  <<: *default
-  database: rails_app_production
-  username: root
-  password:
+
+# production:
+#   <<: *default
+#   database: rails_app_production
+#   username: root
+#   password:
