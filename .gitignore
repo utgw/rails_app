@@ -29,8 +29,4 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
-<<<<<<< HEAD
 /.env
-=======
-/.env
->>>>>>> 9f7b3fd (changed .gitignore file.)
