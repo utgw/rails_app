@@ -13,6 +13,7 @@ gem "sprockets-rails"
 gem "mysql2", "~> 0.5" , group: :development
 
 # 本番環境(heroku)ではPostgreSQLを使用
+gem 'pg', group: :production
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"

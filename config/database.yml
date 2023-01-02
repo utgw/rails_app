@@ -20,6 +20,13 @@ default: &default
 development:
   <<: *default
   database: rails_app_development
+
+production:
+  <<: *default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
 # インデントは必ず半角スペース２つ
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
