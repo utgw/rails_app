@@ -142,10 +142,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.13.10-x86_64-linux)
       racc (~> 1.4)
-<<<<<<< HEAD
     pg (1.4.5)
-=======
->>>>>>> 6634d92 (Gemfile.lock fix)
     public_suffix (5.0.1)
     puma (5.6.5)
       nio4r (~> 2.0)
