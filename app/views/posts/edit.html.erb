@@ -1,0 +1,13 @@
+<div class="tweetPage">
+    <h1 class="tweetTtl">Edit your post.</h1>
+    <div class="tweetFormWrapper">
+        <%= form_tag("/posts/#{@post.id}/update") do %>
+            <div class="tweetForm">
+                <textarea name="content"><%= @post.content%></textarea>
+                <div class="buttonWrapper">
+                    <input type="submit" value="Tweet">
+                </div>
+            </div>
+        <% end %>
+    </div>
+</div>

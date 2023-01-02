@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RailsApp</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="headerTtl"><%= link_to("Rails App", "/") %></h1>
+      <ul class="headerList">
+        <li class="headerListItem">
+          <%= link_to("Home", "/posts/index") %>
+        </li>
+        <li class="headerListItem">
+          <%= link_to("Profile", "/users/show") %>
+        </li>
+        <li class="headerListItem">
+          <%= link_to("Tweet", "/posts/new") %>
+        </li>
+        <li class="headerListItem">
+          <%= link_to("Sign up", "/signup")%>
+        </li>
+        <li class="headerListItem">
+          <%= link_to("Log in", "/login") %>
+        </li>
+      </ul>
+    </header>
+    <% if flash[:notice]%>
+      <div class="flash">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+    <%= yield %>
+  </body>
+</html>

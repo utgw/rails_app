@@ -1,0 +1,19 @@
+<div class="postListPage">
+    <ul class="postList">
+        <% @posts.each do |post| %>
+            <li class="postItem">
+                <p class="postAuthor">UTA</p>
+                <div class="postBody">
+                    <%= post.content %>
+                </div>
+                <div class="postBottom">
+                    <div class="likes">Likes: 10</div>
+                    <div class="buttons">
+                        <%= link_to("edit", "/posts/#{post.id}/edit", class: "editBtn") %>
+                        <%= button_to "delete", "/posts/#{post.id}/delete", method: :post, class: "deleteBtn" %>
+                    </div>
+                </div>
+            </li>
+        <% end %>
+    </ul>
+</div>

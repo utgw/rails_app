@@ -1,0 +1,18 @@
+<div class="tweetPage">
+    <h1 class="tweetTtl">Create your post.</h1>
+    <div class="tweetFormWrapper">
+        <%= form_tag("/posts/create") do %>
+            <% @post.errors.full_messages.each do |message| %>
+                <div class="formError">
+                <%= message %>
+                </div>
+            <% end %>
+            <div class="tweetForm">
+                <textarea name="content"></textarea>
+                <div class="buttonWrapper">
+                    <input type="submit" value="Tweet">
+                </div>
+            </div>
+        <% end %>
+    </div>
+</div>
