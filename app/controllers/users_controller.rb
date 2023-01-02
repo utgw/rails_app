@@ -37,6 +37,7 @@ class UsersController < ApplicationController
       flash[:notice] = "ユーザー登録が完了しました。"
       redirect_to("/users/#{@user.id}")
     else
+      flash[:notice] = "ユーザー登録に失敗しました"
       render :signup, status: :unprocessable_entity
     end
   end
@@ -47,12 +48,13 @@ class UsersController < ApplicationController
   
   def update
     @user = User.find_by(id: params[:id])
-    @user.update(user_params)
+    @user.assign_attributes(user_params)
     if params[:password] == params[:confirmPassword]
       if @user.save
         flash[:notice] = "ユーザー情報を変更しました"
         redirect_to("/users/#{@user.id}")
       else
+        flash[:notice] = "ユーザー情報の変更に失敗しました"
         render :edit, status: :unprocessable_entity
       end
     else
