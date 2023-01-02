@@ -28,6 +28,7 @@ class UsersController < ApplicationController
   end
 
   def signup
+    @user = User.new
   end
 
   def create
