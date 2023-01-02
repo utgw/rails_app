@@ -10,7 +10,10 @@ gem "rails", "~> 7.0.4"
 gem "sprockets-rails"
 
 # Use mysql as the database for Active Record
-gem "mysql2", "~> 0.5"
+gem "mysql2", "~> 0.5" , group: :development
+
+# 本番環境(heroku)ではPostgreSQLを使用
+gem 'pg', group: :production
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
