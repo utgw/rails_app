@@ -1,7 +1,9 @@
 <%= form_tag("/users/#{params[:id]}/update") do %>
     <div class="formWrapper">
-        <% if @error_message %>
-            <%= @error_message %>
+        <% @user.errors.full_messages.each do |message| %>
+            <div class="formError">
+            <%= message %>
+            </div>
         <% end %>
         <p>ユーザー名</p>
         <input name="username" type="text" value="<%= @user.username %>">
