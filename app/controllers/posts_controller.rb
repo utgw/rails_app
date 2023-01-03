@@ -8,7 +8,7 @@ class PostsController < ApplicationController
     @posts_liked_by_current_user = @current_user.likes.pluck(:post_id)
   end
   def new
-      @post = Post.new
+    @post = Post.new
   end
   def edit
     @post = Post.find_by(id: params[:id])
