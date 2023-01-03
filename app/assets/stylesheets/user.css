@@ -1,0 +1,19 @@
+.userWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px;
+  border-bottom: 1px solid #000;
+}
+.username {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+.userEdit a {
+  display: block;
+  color: #fff;
+  background: #078fd8;
+  padding: 15px 50px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
