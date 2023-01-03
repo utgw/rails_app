@@ -9,10 +9,8 @@
                 </div>
                 <div class="postBottom">
                     <% if Like.find_by(user_id: @current_user.id, post_id: post.id) %>
-                        <%# <%= link_to "hoge", {controller: "users", action: "update", user_id: 1}, method: :post %> %>
                             <div class="likes"><i class="fa-solid fa-heart like"></i></div>
                     <% else %>
-                        <%# <%= link_to "hoge", {controller: "likes", action: "like"}, method: :post %> %>
                         <div class="likes"><i class="fa-solid fa-heart unlike"></i></div>
                     <% end %>
                     <% if @current_user.id == post.user_id %>
