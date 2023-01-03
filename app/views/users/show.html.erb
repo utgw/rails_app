@@ -1,0 +1,30 @@
+<div class="userWrapper">
+    <h2 class="username">
+        <%= @current_user.username %>
+    </h2>
+    <p class="userEdit">
+        <% if @current_user.id == @user.id%>
+            <%= link_to("ユーザー情報を編集", "/users/#{@current_user.id}/edit") %>
+        <% end %>
+    </p>
+    <p>フォロー</p>
+    <p>フォロワー</p>
+</div>
+
+<ul class="postList">
+    <% @user.posts.each do |post| %>
+        <li class="postItem">
+            <p class="postAuthor"><%= post.user.username %></p>
+            <div class="postBody">
+                <%= post.content %>
+            </div>
+            <div class="postBottom">
+                <div class="likes">いいね 10</div>
+                <div class="buttons">
+                    <%= link_to("編集", "/posts/#{post.id}/edit", class: "editBtn") %>
+                    <%= button_to "削除", "/posts/#{post.id}/delete", method: :post, class: "deleteBtn" %>
+                </div>
+            </div>
+        </li>
+    <% end %>
+</ul>

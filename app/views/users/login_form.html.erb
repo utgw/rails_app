@@ -1,8 +1,9 @@
 <div class="loginPage">
-    <%= form_tag("/users/create") do %>
+    <%= form_tag("/login") do %>
     <div class="loginForm">
-        <p>ユーザー名</p>
-        <input name="username" type="text">
+        <% if @error_message %>
+            <%= @error_message %>
+        <% end %>
         <p>メールアドレス</p>
         <input name="email" type="text">
         <p>パスワード</p>

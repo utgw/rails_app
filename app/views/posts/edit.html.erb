@@ -1,11 +1,16 @@
 <div class="tweetPage">
-    <h1 class="tweetTtl">Edit your post.</h1>
+    <h1 class="tweetTtl">投稿を編集する</h1>
     <div class="tweetFormWrapper">
         <%= form_tag("/posts/#{@post.id}/update") do %>
+            <% @post.errors.full_messages.each do |message| %>
+                <div class="formError">
+                <%= message %>
+                </div>
+            <% end %>
             <div class="tweetForm">
                 <textarea name="content"><%= @post.content%></textarea>
                 <div class="buttonWrapper">
-                    <input type="submit" value="Tweet">
+                    <input type="submit" value="投稿">
                 </div>
             </div>
         <% end %>

@@ -218,10 +218,17 @@ textarea:focus {
   display: flex;
 }
 .headerListItem {
-  margin-right: 10px;
+  margin-right: 20px;
 }
-.headerListItem a {
+.headerListItem a,
+.headerListItem button {
   color: #fff;
+}
+.headerListItem button {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 .flash {
   color: #fff;
