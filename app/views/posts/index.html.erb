@@ -9,9 +9,9 @@
                 </div>
                 <div class="postBottom">
                     <% if Like.find_by(user_id: @current_user.id, post_id: post.id) %>
-                            <div class="likes"><i class="fa-solid fa-heart like"></i></div>
+                            <%# <div class="likes"><i class="fa-solid fa-heart like"></i></div> %>
                     <% else %>
-                        <div class="likes"><i class="fa-solid fa-heart unlike"></i></div>
+                        <%# <div class="likes"><i class="fa-solid fa-heart unlike"></i></div> %>
                     <% end %>
                     <% if @current_user.id == post.user_id %>
                         <div class="buttons">
