@@ -4,16 +4,27 @@
     </h2>
     <p class="userEdit">
         <% if @current_user.id == @user.id%>
+<<<<<<< HEAD
             <%= link_to "ユーザー情報を編集", users_edit_path(@current_user.id) %>
         <% else%>
             <% if @user.followed_by?(@current_user) %>
                 <%= link_to "フォロー済", user_relationships_path(@user.id), data: {turbo_method: :delete} %>
             <% else%>
                 <%= link_to "フォローする", user_relationships_path(@user.id), data: {turbo_method: :post} %>
+=======
+            <%= link_to("ユーザー情報を編集", "/users/#{@current_user.id}/edit") %>
+        <% else%>
+            <% follow = Follow.find_by(following_id: params[:id], follower_id: @current_user.id) %>
+            <% if follow %>
+                <%= link_to("フォロー中", "/follow/#{@user.id}/destroy", data: {turbo_method: :post}) %>
+            <% else %>
+                <%= link_to("フォローする", "/follow/#{@user.id}/create", data: {turbo_method: :post}) %>
+>>>>>>> e2fbb59 (✨  フォロー機能といいね機能の実装)
             <% end %>
         <% end %>
     </p>
     <div class="followWrapper">
+<<<<<<< HEAD
         <%= link_to follow_user_path(@user.id) do %>
             <p>
                     フォロー <%= @following_count %>
@@ -24,6 +35,18 @@
                     フォロワー <%= @follower_count %>
             </p>
         <% end %>
+=======
+        <p>
+            <%= link_to "/users/#{@user.id}/following" do %>
+                フォロー <%= @following_count %>
+            <% end %>
+        </p>
+        <p>
+            <%= link_to "/users/#{@user.id}/followers" do %>
+                フォロワー <%= @followers_count %>
+            <% end %>
+        </p>
+>>>>>>> e2fbb59 (✨  フォロー機能といいね機能の実装)
     </div>
 </div>
 <div class="postsContainer">
