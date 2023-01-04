@@ -9,6 +9,13 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by(id: params[:id])
+    @following_count = Follow.where(follower_id: params[:id]).count 
+    @followers_count = Follow.where(following_id: params[:id]).count
+  end
+
+  def likes
+    @user = User.find_by(id: params[:id])
+    @likes = Like.where(user_id: @user.id)
   end
 
   def signup
@@ -72,5 +79,13 @@ class UsersController < ApplicationController
     session[:user_id] = nil
     flash[:notice] = "ログアウトしました。"
     redirect_to("/login")
+  end
+
+  def following
+    @following = Follow.where(follower_id: params[:id]) 
+  end
+
+  def followers
+    @followers =  Follow.where(following_id: params[:id])
   end
 end

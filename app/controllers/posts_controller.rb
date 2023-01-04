@@ -4,7 +4,7 @@ class PostsController < ApplicationController
 
 
   def index
-    @posts = Post.all.order(created_at: :desc)
+    @following = Follow.where(follower_id: @current_user.id)
   end
   def new
     @post = Post.new

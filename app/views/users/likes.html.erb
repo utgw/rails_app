@@ -1,39 +1,27 @@
 <div class="userWrapper">
     <h2 class="username">
-        <%= @user.username %>
+        <%= @current_user.username %>
     </h2>
     <p class="userEdit">
         <% if @current_user.id == @user.id%>
             <%= link_to("ユーザー情報を編集", "/users/#{@current_user.id}/edit") %>
-        <% else%>
-            <% follow = Follow.find_by(following_id: params[:id], follower_id: @current_user.id) %>
-            <% if follow %>
-                <%= link_to("フォロー中", "/follow/#{@user.id}/destroy", data: {turbo_method: :post}) %>
-            <% else %>
-                <%= link_to("フォローする", "/follow/#{@user.id}/create", data: {turbo_method: :post}) %>
-            <% end %>
+        <% else %>
+            <%= link_to("フォローする", "/users/#{@current_user.id}/edit") %>
         <% end %>
     </p>
     <div class="followWrapper">
-        <p>
-            <%= link_to "/users/#{@user.id}/following" do %>
-                フォロー <%= @following_count %>
-            <% end %>
-        </p>
-        <p>
-            <%= link_to "/users/#{@user.id}/followers" do %>
-                フォロワー <%= @followers_count %>
-            <% end %>
-        </p>
+        <p>フォロー</p>
+        <p>フォロワー</p>
     </div>
 </div>
 <div class="postsContainer">
     <div class="tabMenu">
-        <p class="active">投稿</p>
-        <p><%= link_to("いいね！", "/users/#{@user.id}/likes") %></p>
+        <p><%= link_to("投稿", "/users/#{@user.id}") %></p>
+        <p class="active">いいね！</p>
     </div>
     <ul class="postList">
-        <% @user.posts.each do |post| %>
+        <% @likes.each do |like| %>
+            <% post = Post.find_by(id: like.post_id) %>
             <li class="postItem">
                 <p class="postAuthor"><%= link_to post.user.username, "/users/#{post.user.id}" %></p>
                 <div class="postBody">
