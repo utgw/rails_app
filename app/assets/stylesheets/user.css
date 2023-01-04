@@ -17,3 +17,46 @@
   margin-bottom: 10px;
   border-radius: 10px;
 }
+.tabMenu {
+  width: 100%;
+  display: flex;
+}
+.tabMenu p {
+  width: 100px;
+  text-align: center;
+}
+.active {
+  border-bottom: 2px #078fd8 solid;
+}
+.followWrapper {
+  display: flex;
+}
+.followWrapper p {
+  margin: 10px;
+}
+
+.followPage {
+  text-align: center;
+}
+.followTtl {
+  color: #adadad;
+  font-size: 3rem;
+  margin-top: 100px;
+  margin-bottom: 40px;
+}
+.followList {
+  width: 80%;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.followItem {
+  padding: 20px;
+  border-bottom: 1px solid #dad9d9;
+}
+.followItem:last-child {
+  border-bottom: none;
+}
+.followItem p {
+  font-size: 2rem;
+}
