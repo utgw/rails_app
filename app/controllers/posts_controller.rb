@@ -7,7 +7,7 @@ class PostsController < ApplicationController
     @posts = Post.where(user_id: [@current_user.id, *@current_user.followings]).order(created_at: :desc).page(params[:page]).per(10)
   end
   def new
-    @post = Post.new
+      @post = Post.new
   end
   def edit
     @post = Post.find_by(id: params[:id])
