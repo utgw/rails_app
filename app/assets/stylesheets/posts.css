@@ -32,6 +32,9 @@
   padding: 20px;
   margin-bottom: 10px;
 }
+.postBody p {
+  word-wrap: break-word;
+}
 .postBottom {
   display: flex;
   justify-content: space-between;
