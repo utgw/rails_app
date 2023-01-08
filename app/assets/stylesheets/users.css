@@ -44,19 +44,32 @@
   margin-top: 100px;
   margin-bottom: 40px;
 }
-.followList {
-  width: 80%;
-  max-width: 800px;
-  margin: 0 auto;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+.userTtl {
+  margin-top: 20px;
+  color: #adadad;
+  font-size: 3rem;
+  text-align: center;
 }
-.followItem {
+.userList {
+  width: 80%;
+  max-width: 400px;
+  margin: 20px auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+.userItem {
   padding: 20px;
   border-bottom: 1px solid #dad9d9;
+  transition: background-color 0.3s ease;
 }
-.followItem:last-child {
+.userItem:hover {
+  background-color: #dad9d9;
+}
+.userItem:last-child {
   border-bottom: none;
 }
-.followItem p {
-  font-size: 2rem;
+.userItem p {
+  text-align: center;
+  font-weight: 100;
+  font-size: 1.25rem;
 }

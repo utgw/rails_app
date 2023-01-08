@@ -9,13 +9,20 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by(id: params[:id])
-    @following_count = Follow.where(follower_id: params[:id]).count 
-    @followers_count = Follow.where(following_id: params[:id]).count
+    @posts = @user.posts.order(created_at: :desc).page(params[:page]).per(10)
+    @followings = @user.followings
+    @followers = @user.followers
+    @following_count = @followings.count
+    @follower_count = @followers.count
   end
 
   def likes
     @user = User.find_by(id: params[:id])
-    @likes = Like.where(user_id: @user.id)
+    @likes = Like.where(user_id: @user.id).order(created_at: :desc).page(params[:page]).per(10)
+    @followings = @user.followings
+    @followers = @user.followers
+    @following_count = @followings.count
+    @follower_count = @followers.count
   end
 
   def signup
@@ -81,11 +88,15 @@ class UsersController < ApplicationController
     redirect_to("/login")
   end
 
-  def following
-    @following = Follow.where(follower_id: params[:id]) 
+  def follow
+      user = User.find(params[:id])
+      @users = user.followings
+      @follows_count = @users.count
   end
 
   def followers
-    @followers =  Follow.where(following_id: params[:id])
+    user = User.find(params[:id])
+    @users = user.followers
+    @followers_count = @users.count
   end
 end

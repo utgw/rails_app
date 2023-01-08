@@ -4,7 +4,7 @@ class PostsController < ApplicationController
 
 
   def index
-    @posts = Post.all.order(created_at: :desc)
+    @posts = Post.where(user_id: [@current_user.id, *@current_user.followings]).order(created_at: :desc).page(params[:page]).per(10)
   end
   def new
       @post = Post.new
@@ -34,11 +34,11 @@ class PostsController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
-  def delete
+  def destroy
     @post = Post.find_by(id: params[:id])
     @post.destroy
     flash[:notice] = "投稿を削除しました"
-    redirect_to("/posts/index")
+    redirect_back fallback_location: route_path
   end
 
   def ensure_correct_user

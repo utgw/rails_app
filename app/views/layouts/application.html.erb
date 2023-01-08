@@ -14,34 +14,34 @@
     <header class="header">
       <h1 class="headerTtl">
         <% if @current_user %>
-          <%= link_to("きょうかちゃ あっぷ", "/posts/index") %>
+          <%= link_to "Rails App", posts_index_path %>
         <% else %>
-          <%= link_to("きょうかちゃ あっぷ", "/") %>
+          <%= link_to "Rails App", route_path %>
         <% end %>
       </h1>
       <ul class="headerList">
         <% if current_user %>
           <li class="headerListItem">
-            <%= link_to("ホーム", "/posts/index") %>
+            <%= link_to "ホーム", posts_index_path %>
           </li>
           <li class="headerListItem">
-            <%= link_to("プロフィール", "/users/#{current_user.id}") %>
+            <%= link_to "ユーザー一覧", users_index_path %>
           </li>
           <li class="headerListItem">
-            <%= link_to("投稿する", "/posts/new") %>
+            <%= link_to "プロフィール", users_show_path(current_user.id) %>
           </li>
           <li class="headerListItem">
-            <%= button_to "ログアウト", "/logout", method: :post %>
+            <%= link_to "投稿する", posts_new_path %>
+          </li>
+          <li class="headerListItem">
+            <%= link_to "ログアウト", logout_path, data: {turbo_method: :post} %>
           </li>
         <% else %>
           <li class="headerListItem">
-            <%= link_to("ホーム", "/posts/index") %>
+            <%= link_to "新規登録", signup_path %>
           </li>
           <li class="headerListItem">
-            <%= link_to("新規登録", "/signup")%>
-          </li>
-          <li class="headerListItem">
-            <%= link_to("ログイン", "/login") %>
+            <%= link_to "ログイン", login_path %>
           </li>
         <% end %>
       </ul>

@@ -129,3 +129,12 @@
 .fa-heart.fa-solid.unlike {
   color: #8899a6;
 }
+.pagination a {
+  margin: 0 4px;
+}
+.pagination a:hover {
+  opacity: 0.7;
+}
+.current {
+  color: #078fd8;
+}

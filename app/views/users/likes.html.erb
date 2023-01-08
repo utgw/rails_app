@@ -1,49 +1,65 @@
 <div class="userWrapper">
     <h2 class="username">
-        <%= @current_user.username %>
+        <%= @user.username %>
     </h2>
     <p class="userEdit">
         <% if @current_user.id == @user.id%>
-            <%= link_to("ユーザー情報を編集", "/users/#{@current_user.id}/edit") %>
+            <%= link_to "ユーザー情報を編集", users_edit_path(@current_user.id) %>
         <% else %>
-            <%= link_to("フォローする", "/users/#{@current_user.id}/edit") %>
+            <% if @user.followed_by?(@current_user) %>
+                <%= link_to "フォロー済", user_relationships_path(@user.id), data: {turbo_method: :delete} %>
+            <% else%>
+                <%= link_to "フォローする", user_relationships_path(@user.id), data: {turbo_method: :post} %>
+            <% end %>
         <% end %>
     </p>
     <div class="followWrapper">
-        <p>フォロー</p>
-        <p>フォロワー</p>
+        <div class="followWrapper">
+            <%= link_to follow_user_path(@user.id) do %>
+                <p>
+                        フォロー <%= @following_count %>
+                </p>
+            <% end %>
+            <%= link_to followers_user_path(@user.id) do %>
+                <p>
+                        フォロワー <%= @follower_count %>
+                </p>
+            <% end %>
+        </div>
     </div>
 </div>
 <div class="postsContainer">
     <div class="tabMenu">
-        <p><%= link_to("投稿", "/users/#{@user.id}") %></p>
+        <p><%= link_to "投稿", users_show_path(@user.id) %></p>
         <p class="active">いいね！</p>
     </div>
     <ul class="postList">
         <% @likes.each do |like| %>
             <% post = Post.find_by(id: like.post_id) %>
             <li class="postItem">
-                <p class="postAuthor"><%= link_to post.user.username, "/users/#{post.user.id}" %></p>
+                <p class="postAuthor"><%= link_to post.user.username, users_show_path(post.user.id) %></p>
+                <p class="date"><%= post.created_at.strftime('%Y/%m/%d %H:%M') %></p>
                 <div class="postBody">
                     <%= post.content %>
                 </div>
                 <div class="postBottom">
                     <% likes_count = Like.where(post_id: post.id).count %>
                     <% if Like.find_by(user_id: @current_user.id, post_id: post.id) %>
-                        <%= link_to dislikes_in_profile_path(post.id), data: { turbo_method: :delete} do%>
+                        <%= link_to unlike_path(post.id), data: { turbo_method: :delete} do%>
                             <div class="likes"><i class="fa-solid fa-heart like"></i><span><%= likes_count %></span></div>
                         <% end %>
                     <% else %>
-                        <%= link_to  likes_in_profile_path(post.id), data: { turbo_method: :post } do %>
+                        <%= link_to  like_path(post.id), data: { turbo_method: :post } do %>
                             <div class="likes"><i class="fa-solid fa-heart unlike"></i><span><%= likes_count %></span></div>
                         <% end %>
                     <% end %>
                     <div class="buttons">
-                        <%= link_to("編集", "/posts/#{post.id}/edit", class: "editBtn") %>
-                        <%= button_to "削除", "/posts/#{post.id}/delete", method: :post, class: "deleteBtn" %>
+                        <%= link_to "編集", posts_edit_path(post.id), class: "editBtn" %>
+                        <%= link_to  "削除", posts_delete_path(post.id), data: { turbo_method: :delete }, class: "deleteBtn" %>
                     </div>
                 </div>
             </li>
         <% end %>
     </ul>
+    <%= paginate @likes %>
 </div>
