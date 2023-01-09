@@ -1,0 +1,17 @@
+ja:
+  views:
+    pagination:
+      first: "&laquo; 最初"
+      last: "最後 &raquo;"
+      previous: "&lsaquo; 前"
+      next: "次 &rsaquo;"
+      truncate: "..."
+
+  activerecord:
+    errors:
+      models:
+        post:
+          attributes:
+            content:
+              too_long: "140字以内で入力してください"
+              blank: "本文を入力してください"

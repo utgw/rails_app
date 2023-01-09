@@ -1,0 +1,242 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+/*----------------------------------------
+	RESET
+----------------------------------------*/
+*,
+::before,
+::after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+* {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+::before,
+::after {
+  text-decoration: inherit;
+  vertical-align: inherit;
+}
+
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+dialog,
+figure,
+footer,
+header,
+main,
+menu,
+nav,
+section,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+header,
+footer,
+article,
+section,
+aside,
+main,
+nav,
+menu,
+figure,
+figcaption {
+  display: block;
+}
+
+span,
+small,
+strong,
+em,
+b,
+i {
+  color: inherit;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border: 0;
+  vertical-align: top;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+caption,
+th {
+  text-align: left;
+}
+
+input,
+select {
+  vertical-align: middle;
+}
+
+input,
+textarea {
+  margin: 0;
+  padding: 0;
+}
+
+address {
+  font-style: normal;
+}
+
+q::before,
+q::after {
+  display: none;
+}
+
+/*----------------------------------------
+	COMMON
+----------------------------------------*/
+html {
+  font-size: 100%;
+}
+body {
+  font-family: sans-serif;
+}
+a {
+  color: #000;
+  text-decoration: none;
+}
+input:focus,
+textarea:focus {
+  outline: none;
+}
+.header {
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #078fd8;
+  padding: 0 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+}
+.headerTtl {
+  font-size: 1.5rem;
+}
+.headerTtl a {
+  color: #fff;
+}
+.headerList {
+  display: flex;
+}
+.headerListItem {
+  margin-right: 20px;
+}
+.headerListItem a,
+.headerListItem button {
+  color: #fff;
+}
+.headerListItem button {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+.flash {
+  color: #fff;
+  font-size: 1.5rem;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffb700;
+}

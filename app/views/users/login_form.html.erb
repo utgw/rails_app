@@ -1,0 +1,14 @@
+<div class="loginPage">
+    <%= form_tag("/login") do %>
+    <div class="loginForm">
+        <% if @error_message %>
+            <%= @error_message %>
+        <% end %>
+        <p>メールアドレス</p>
+        <input name="email" type="text">
+        <p>パスワード</p>
+        <input name="password" type="password">
+        <input type="submit" value="送信">
+    </div>
+    <% end %>
+</div>
