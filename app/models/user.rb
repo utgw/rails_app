@@ -3,8 +3,8 @@ class User < ApplicationRecord
     validates :email, {presence: true, uniqueness: true}
     validates :password, {presence: true}
 
-    has_many :users
     has_many :posts
+    has_many :likes
     has_many :active_relationships, class_name: "Relationship", foreign_key: :following_id
     has_many :followings, through: :active_relationships, source: :follower
     has_many :passive_relationships, class_name: "Relationship", foreign_key: :follower_id
