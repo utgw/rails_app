@@ -40,7 +40,7 @@
                     <p><%= post.content %></p>
                 </div>
                 <div class="postBottom">
-                    <% likes_count = Like.where(post_id: post.id).count %>
+                    <% likes_count = post.likes.size %>
                     <% if Like.find_by(user_id: @current_user.id, post_id: post.id) %>
                         <%= link_to unlike_path(post.id), data: { turbo_method: :delete} do%>
                             <div class="likes"><i class="fa-solid fa-heart like"></i><span><%= likes_count %></span></div>
@@ -58,5 +58,5 @@
             </li>
         <% end %>
     </ul>
-    <%= paginate @posts%>
+    <%# <%= paginate @posts%>
 </div>

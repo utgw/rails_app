@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by(id: params[:id])
-    @posts = @user.posts.order(created_at: :desc).page(params[:page]).per(10)
+    @posts = @user.posts.includes(:likes).order(created_at: :desc).page(params[:page]).per(10)
     @followings = @user.followings
     @followers = @user.followers
     @following_count = @followings.count
