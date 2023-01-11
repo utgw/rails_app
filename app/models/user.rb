@@ -3,6 +3,8 @@ class User < ApplicationRecord
     validates :email, {presence: true, uniqueness: true}
     validates :password, {presence: true}
 
+    has_many :posts
+
     has_many :active_relationships, class_name: "Relationship", foreign_key: :following_id
     has_many :followings, through: :active_relationships, source: :follower
 
@@ -11,9 +13,5 @@ class User < ApplicationRecord
 
     def followed_by?(user)
         passive_relationships.find_by(following_id: user.id).present?
-    end
-
-    def posts
-        return Post.where(user_id: self.id)
     end
 end
