@@ -10,6 +10,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find_by(id: params[:id])
     @posts = @user.posts.includes(:likes).order(created_at: :desc).page(params[:page]).per(10)
+    @current_user_likes_post_ids = @current_user.likes.pluck(:post_id)
     @followings = @user.followings
     @followers = @user.followers
     @following_count = @followings.count
