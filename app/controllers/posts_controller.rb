@@ -5,6 +5,7 @@ class PostsController < ApplicationController
 
   def index
     @posts = Post.where(user_id: [@current_user.id, *@current_user.followings]).order(created_at: :desc).page(params[:page]).per(10)
+    @posts_liked_by_current_user = @current_user.likes.pluck(:post_id)
   end
   def new
       @post = Post.new
