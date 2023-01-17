@@ -1,34 +1,7 @@
 <div class="postListPage">
     <div class="postsContainer">
         <ul class="postList">
-            <% @posts.each do |post| %>
-                <li class="postItem">
-                    <p class="postAuthor"><%= link_to post.user.username, users_show_path(post.user.id) %></p>
-                    <p class="date"><%= post.created_at.strftime('%Y/%m/%d %H:%M') %></p>
-                    <div class="postBody">
-                        <p><%= post.content %></p>
-                    </div>
-
-                    <div class="postBottom">
-                        <% likes_count = post.likes.size %>
-                        <% if @posts_liked_by_current_user.include?(post.id) %>
-                            <%= link_to unlike_path(post.id), data: { turbo_method: :delete} do%>
-                                <div class="likes"><i class="fa-solid fa-heart like"></i><span><%= likes_count %></span></div>
-                            <% end %>
-                        <% else %>
-                            <%= link_to  like_path(post.id), data: { turbo_method: :post } do %>
-                                <div class="likes"><i class="fa-solid fa-heart unlike"></i><span><%= likes_count %></span></div>
-                            <% end %>
-                        <% end %>
-                        <% if @current_user.id == post.user_id %>
-                            <div class="buttons">
-                                <%= link_to "編集", posts_edit_path(post.id), class: "editBtn" %>
-                                <%= link_to  "削除", posts_delete_path(post.id), data: { turbo_method: :delete }, class: "deleteBtn" %>
-                            </div>
-                        <% end %>
-                    </div>
-                </li>
-            <% end %>
+            <%= render partial: 'shared/posts_index', collection: @posts, as: 'post' %>
         </ul>
         <%= paginate @posts%>
     </div>
