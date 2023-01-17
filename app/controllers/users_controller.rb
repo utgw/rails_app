@@ -19,7 +19,7 @@ class UsersController < ApplicationController
 
   def likes
     @user = User.find_by(id: params[:id])
-    @liked_posts = @user.liked_posts.order(created_at: :desc)
+    @liked_posts = @user.liked_posts.includes([:user, :likes]).order("likes.created_at DESC")
     @followings = @user.followings
     @followers = @user.followers
     @following_count = @followings.count
