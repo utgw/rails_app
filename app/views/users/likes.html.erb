@@ -34,7 +34,7 @@
         <p class="active">いいね！</p>
     </div>
     <ul class="postList">
-        <% @like_posts.each do |post| %>
+        <% @liked_posts.each do |post| %>
             <li class="postItem">
                 <p class="postAuthor"><%= link_to post.user.username, users_show_path(post.user.id) %></p>
                 <p class="date"><%= post.created_at.strftime('%Y/%m/%d %H:%M') %></p>

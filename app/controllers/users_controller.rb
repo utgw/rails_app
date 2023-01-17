@@ -19,8 +19,7 @@ class UsersController < ApplicationController
 
   def likes
     @user = User.find_by(id: params[:id])
-    likes = Like.where(user_id: @user.id).order(created_at: :desc).pluck(:post_id)
-    @like_posts = Post.includes([:user, :likes]).find(likes)
+    @liked_posts = @user.liked_posts.order(created_at: :desc)
     @followings = @user.followings
     @followers = @user.followers
     @following_count = @followings.count
