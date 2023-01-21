@@ -1,15 +1,22 @@
 <div class="loginPage">
     <%= form_tag("/users/create") do %>
-    <div class="loginForm">
-        <p>ユーザー名</p>
-        <input name="username" type="text">
-        <p>メールアドレス</p>
-        <input name="email" type="text">
-        <p>パスワード</p>
-        <input name="password" type="password">
-        <p>確認用パスワード(パスワードを再度入力してください)</p>
-        <input name="password_confirmation" type="password">
-        <input type="submit" value="送信">
-    </div>
+        <% if @user %>
+            <% @user.errors.full_messages.each do |message| %>
+                <div class="formError">
+                <%= message %>
+                </div>
+            <% end %>
+        <% end %>
+            <div class="loginForm">
+                <p>ユーザー名</p>
+                <input name="username" type="text">
+                <p>メールアドレス</p>
+                <input name="email" type="text">
+                <p>パスワード</p>
+                <input name="password" type="password">
+                <p>確認用パスワード(パスワードを再度入力してください)</p>
+                <input name="password_confirmation" type="password">
+                <input type="submit" value="送信">
+            </div>
     <% end %>
 </div>

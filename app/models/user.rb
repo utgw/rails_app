@@ -1,9 +1,10 @@
 class User < ApplicationRecord
     has_secure_password
 
-    validates :username, {presence: true}
-    validates :email, {presence: true, uniqueness: true}
-    validates :password, {presence: true}
+    validates :username, presence: { message: 'ユーザー名は必須項目です'}
+    validates :email, presence: { message: 'メールアドレスは必須項目です'}
+    validates :email, uniqueness: { message: 'このメールアドレスはすでに登録済みです'}
+    validates :password, presence: { message: 'パスワードは必須項目です'}
 
     has_many :posts
     has_many :likes
