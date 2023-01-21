@@ -8,9 +8,9 @@
         <p>メールアドレス</p>
         <input name="email" type="text" value="<%= @user.email %>">
         <p>パスワード</p>
-        <input name="password" type="password" value="<%= @user.password %>">
+        <input name="password" type="password">
         <p>確認用パスワード(パスワードを再度入力してください)</p>
-        <input name="confirmPassword" type="password">
+        <input name="password_confirmation" type="password">
         <input type="submit" value="編集">
     </div>
 <% end %>

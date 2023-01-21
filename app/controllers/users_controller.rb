@@ -49,16 +49,11 @@ class UsersController < ApplicationController
   def update
     @user = User.find_by(id: params[:id])
     @user.assign_attributes(user_params)
-    if params[:password] == params[:confirmPassword]
-      if @user.save
-        flash[:notice] = "ユーザー情報を変更しました"
-        redirect_to("/users/#{@user.id}")
-      else
-        flash[:notice] = "ユーザー情報の変更に失敗しました"
-        render :edit, status: :unprocessable_entity
-      end
+    if @user.save
+      flash[:notice] = "ユーザー情報を変更しました"
+      redirect_to("/users/#{@user.id}")
     else
-      @error_message = "パスワードと確認用パスワードが違います"
+      flash[:notice] = "ユーザー情報の変更に失敗しました"
       render :edit, status: :unprocessable_entity
     end
   end
@@ -67,8 +62,8 @@ class UsersController < ApplicationController
   end 
 
   def login
-    @user = User.find_by(email: params[:email], password: params[:password])
-    if @user
+    @user = User.find_by(email: params[:email])
+    if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
       flash[:notice] = "ログインしました。"
       redirect_to("/posts/index")
@@ -100,6 +95,6 @@ class UsersController < ApplicationController
 
   private
   def user_params
-    params.permit(:username, :email, :password)
+    params.permit(:username, :email, :password, :password_confirmation)
   end
 end

@@ -75,3 +75,6 @@ group :test do
 end
 
 gem "kaminari"
+
+# Use Active Model has_secure_password
+gem 'bcrypt', '~> 3.1.11'
