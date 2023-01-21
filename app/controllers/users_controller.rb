@@ -31,11 +31,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(
-      username: params[:username],
-      email: params[:email],
-      password: params[:password]
-    )
+    @user = User.new(user_params)
     if @user.save
       session[:user_id] = @user.id
       flash[:notice] = "ユーザー登録が完了しました。"
@@ -51,9 +47,7 @@ class UsersController < ApplicationController
   
   def update
     @user = User.find_by(id: params[:id])
-    @user.username = params[:username]
-    @user.email = params[:email]
-    @user.password = params[:password]
+    @user.update(user_params)
     if params[:password] == params[:confirmPassword]
       if @user.save
         flash[:notice] = "ユーザー情報を変更しました"
@@ -100,5 +94,10 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     @users = user.followers
     @followers_count = @users.count
+  end
+
+  private
+  def user_params
+    params.permit(:username, :email, :password)
   end
 end
