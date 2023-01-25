@@ -15,9 +15,11 @@
                 <div class="likes"><i class="fa-solid fa-heart unlike"></i><span><%= likes_count %></span></div>
             <% end %>
         <% end %>
-        <div class="buttons">
-            <%= link_to "編集", posts_edit_path(post.id), class: "editBtn" %>
-            <%= link_to  "削除", posts_delete_path(post.id), data: { turbo_method: :delete }, class: "deleteBtn" %>
-        </div>
+        <% if @current_user == post.user %>
+            <div class="buttons">
+                <%= link_to "編集", posts_edit_path(post.id), class: "editBtn" %>
+                <%= link_to  "削除", posts_delete_path(post.id), data: { turbo_method: :delete }, class: "deleteBtn" %>
+            </div>
+        <% end %>
     </div>
 </li>
