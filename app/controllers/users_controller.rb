@@ -32,12 +32,15 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
-    if @user.save
+    begin
+      @user = User.new(user_params)
+      @user.save!
       session[:user_id] = @user.id
       flash[:notice] = "ユーザー登録が完了しました。"
       redirect_to("/users/#{@user.id}")
-    else
+    rescue ActiveRecord::RecordInvalid
+      render :signup, status: :unprocessable_entity
+    rescue
       flash[:notice] = "ユーザー登録に失敗しました"
       render :signup, status: :unprocessable_entity
     end
@@ -48,12 +51,14 @@ class UsersController < ApplicationController
   end
   
   def update
-    @user = User.find_by(id: params[:id])
-    @user.assign_attributes(user_params)
-    if @user.save
+    begin
+      @user = User.find(params[:id])
+      @user.update!(user_params)
       flash[:notice] = "ユーザー情報を変更しました"
       redirect_to("/users/#{@user.id}")
-    else
+    rescue ActiveRecord::RecordInvalid
+      render :edit, status: :unprocessable_entity
+    rescue
       flash[:notice] = "ユーザー情報の変更に失敗しました"
       render :edit, status: :unprocessable_entity
     end
