@@ -19,7 +19,7 @@ class UsersController < ApplicationController
 
   def likes
     @user = User.find_by(id: params[:id])
-    @liked_posts = @user.liked_posts.includes([:user, :likes]).order("likes.created_at DESC")
+    @liked_posts = @user.liked_posts.includes([:user, :likes]).order("likes.created_at DESC").page(params[:page]).per(10)
     @posts_liked_by_current_user = @current_user.likes.pluck(:post_id)
     @followings = @user.followings
     @followers = @user.followers
@@ -28,6 +28,7 @@ class UsersController < ApplicationController
   end
 
   def signup
+    @user = User.new
   end
 
   def create
@@ -43,7 +44,7 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user =User.find_by(id: params[:id])
+    @user = User.find_by(id: params[:id])
   end
   
   def update

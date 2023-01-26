@@ -1,12 +1,4 @@
 <div class="userListPage">
     <h2 class="userTtl">フォロワー一覧</h2>
-    <ul class="userList">
-        <% @users.each do |user| %>
-            <%= link_to users_show_path(user.id) do %>
-                <li class="userItem">
-                    <p><%= user.username %></p>
-                </li>
-            <% end %>
-        <% end %>
-    </ul>
+    <%= render partial: "user_list", collections: @users %>
 </div>

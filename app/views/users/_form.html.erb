@@ -1,0 +1,20 @@
+<%= form_tag(path) do %>
+    <div class="formWrapper">
+        <% if @user.errors.any? %>
+            <% @user.errors.full_messages.each do |message| %>
+                <div class="formError">
+                <%= message %>
+                </div>
+            <% end %>
+        <% end %>
+        <p>ユーザー名</p>
+        <input name="username" type="text" value="<%= @user.username %>">
+        <p>メールアドレス</p>
+        <input name="email" type="text" value="<%= @user.email %>">
+        <p>パスワード</p>
+        <input name="password" type="password">
+        <p>確認用パスワード(パスワードを再度入力してください)</p>
+        <input name="password_confirmation" type="password">
+        <input type="submit" value="編集">
+    </div>
+<% end %>
