@@ -19,10 +19,10 @@ class UsersController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       flash[:notice] = "該当のユーザーが見つかりませんでした"
       redirect_to users_index_path
-    end
     rescue
       flash[:notice] = "プロフィール画面の表示に失敗しました"
       redirect_to users_index_path
+    end
   end
 
   def likes
@@ -37,10 +37,10 @@ class UsersController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       flash[:notice] = "該当のユーザーが見つかりませんでした"
       redirect_to users_index_path
-    end
     rescue
       flash[:notice] = "いいね一覧の表示に失敗しました"
       redirect_to users_index_path
+    end
   end
 
   def signup
@@ -56,10 +56,10 @@ class UsersController < ApplicationController
       redirect_to("/users/#{@user.id}")
     rescue ActiveRecord::RecordInvalid
       render :signup, status: :unprocessable_entity
-    end
     rescue
       flash[:notice] = "ユーザー登録に失敗しました"
       redirect_to users_index_path
+    end
   end
 
   def edit
@@ -68,10 +68,10 @@ class UsersController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       flash[:notice] = "該当のユーザーが見つかりませんでした"
       redirect_to users_index_path
-    end
     rescue
       flash[:notice] = "ユーザーの表示に失敗しました"
       redirect_to users_index_path
+    end
   end
   
   def update

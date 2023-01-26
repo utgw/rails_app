@@ -15,8 +15,11 @@ class RelationshipsController < ApplicationController
       follow = @current_user.active_relationships.find_by!(follower_id: params[:user_id])
       follow.destroy!
       redirect_to("/users/#{params[:user_id]}")
+    rescue ActiveRecord::RecordNotFound
+      flash[:notice] = "このユーザーをフォローしていません"
+      redirect_to("/users/#{params[:user_id]}")
     rescue
-      flash[:notice] = "ユーザーの安フォローに失敗しました"
+      flash[:notice] = "ユーザーのアンフォローに失敗しました"
       redirect_to("/users/#{params[:user_id]}")
     end
   end
