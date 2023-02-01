@@ -8,62 +8,86 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find_by(id: params[:id])
-    @posts = @user.posts.includes(:likes).order(created_at: :desc).page(params[:page]).per(10)
-    @posts_liked_by_current_user = @current_user.likes.pluck(:post_id)
-    @followings = @user.followings
-    @followers = @user.followers
-    @following_count = @followings.count
-    @follower_count = @followers.count
+    begin
+      @user = User.find(params[:id])
+      @posts = @user.posts.includes(:likes).order(created_at: :desc).page(params[:page]).per(10)
+      @posts_liked_by_current_user = @current_user.likes.pluck(:post_id)
+      @followings = @user.followings
+      @followers = @user.followers
+      @following_count = @followings.count
+      @follower_count = @followers.count
+    rescue ActiveRecord::RecordNotFound
+      flash[:notice] = "該当のユーザーが見つかりませんでした"
+      redirect_to users_index_path
+    rescue
+      flash[:notice] = "プロフィール画面の表示に失敗しました"
+      redirect_to users_index_path
+    end
   end
 
   def likes
-    @user = User.find_by(id: params[:id])
-    @liked_posts = @user.liked_posts.includes([:user, :likes]).order("likes.created_at DESC")
-    @posts_liked_by_current_user = @current_user.likes.pluck(:post_id)
-    @followings = @user.followings
-    @followers = @user.followers
-    @following_count = @followings.count
-    @follower_count = @followers.count
+    begin
+      @user = User.find(params[:id])
+      @liked_posts = @user.liked_posts.includes([:user, :likes]).order("likes.created_at DESC").page(params[:page]).per(10)
+      @posts_liked_by_current_user = @current_user.likes.pluck(:post_id)
+      @followings = @user.followings
+      @followers = @user.followers
+      @following_count = @followings.count
+      @follower_count = @followers.count
+    rescue ActiveRecord::RecordNotFound
+      flash[:notice] = "該当のユーザーが見つかりませんでした"
+      redirect_to users_index_path
+    rescue
+      flash[:notice] = "いいね一覧の表示に失敗しました"
+      redirect_to users_index_path
+    end
   end
 
   def signup
+    @user = User.new
   end
 
   def create
-    @user = User.new(
-      username: params[:username],
-      email: params[:email],
-      password: params[:password]
-    )
-    if @user.save
+    begin
+      @user = User.new(user_params)
+      @user.save!
       session[:user_id] = @user.id
       flash[:notice] = "ユーザー登録が完了しました。"
       redirect_to("/users/#{@user.id}")
-    else
+    rescue ActiveRecord::RecordInvalid
       render :signup, status: :unprocessable_entity
+    rescue
+      flash[:notice] = "ユーザー登録に失敗しました"
+      redirect_to users_index_path
     end
   end
 
   def edit
-    @user =User.find_by(id: params[:id])
+    begin
+      @user = User.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:notice] = "該当のユーザーが見つかりませんでした"
+      redirect_to users_index_path
+    rescue
+      flash[:notice] = "ユーザーの表示に失敗しました"
+      redirect_to users_index_path
+    end
   end
   
   def update
-    @user = User.find_by(id: params[:id])
-    @user.username = params[:username]
-    @user.email = params[:email]
-    @user.password = params[:password]
-    if params[:password] == params[:confirmPassword]
-      if @user.save
-        flash[:notice] = "ユーザー情報を変更しました"
-        redirect_to("/users/#{@user.id}")
-      else
-        render :edit, status: :unprocessable_entity
-      end
-    else
-      @error_message = "パスワードと確認用パスワードが違います"
+    begin
+      @user = User.find(params[:id])
+      @user.update!(user_params)
+      flash[:notice] = "ユーザー情報を変更しました"
+      redirect_to("/users/#{@user.id}")
+    rescue ActiveRecord::RecordNotFound
+      flash[:notice] = "該当のユーザーが見つかりませんでした"
+      redirect_to users_index_path
+    rescue ActiveRecord::RecordInvalid
       render :edit, status: :unprocessable_entity
+    rescue
+      flash[:notice] = "ユーザー情報の更新に失敗しました"
+      redirect_to users_index_path
     end
   end
 
@@ -71,8 +95,8 @@ class UsersController < ApplicationController
   end 
 
   def login
-    @user = User.find_by(email: params[:email], password: params[:password])
-    if @user
+    @user = User.find_by(email: params[:email])
+    if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
       flash[:notice] = "ログインしました。"
       redirect_to("/posts/index")
@@ -91,14 +115,35 @@ class UsersController < ApplicationController
   end
 
   def follow
+    begin
       user = User.find(params[:id])
       @users = user.followings
       @follows_count = @users.count
+    rescue ActiveRecord::RecordNotFound
+      flash[:notice] = "該当のユーザーが見つかりませんでした"
+      redirect_to users_index_path
+    rescue
+      flash[:notice] = "フォロー一覧の表示に失敗しました"
+      redirect_to users_index_path
+    end
   end
 
   def followers
-    user = User.find(params[:id])
-    @users = user.followers
-    @followers_count = @users.count
+    begin
+      user = User.find(params[:id])
+      @users = user.followers
+      @followers_count = @users.count
+    rescue ActiveRecord::RecordNotFound
+      flash[:notice] = "該当のユーザーが見つかりませんでした"
+      redirect_to users_index_path
+    rescue
+      flash[:notice] = "フォロワー一覧の表示に失敗しました"
+      redirect_to users_indext_path
+    end
+  end
+
+  private
+  def user_params
+    params.permit(:username, :email, :password, :password_confirmation)
   end
 end

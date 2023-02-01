@@ -1,14 +1,17 @@
 class User < ApplicationRecord
-    validates :username, {presence: true}
-    validates :email, {presence: true, uniqueness: true}
-    validates :password, {presence: true}
+    has_secure_password
 
-    has_many :posts
-    has_many :likes
+    validates :username, presence: { message: 'ユーザー名は必須項目です'}
+    validates :email, presence: { message: 'メールアドレスは必須項目です'}
+    validates :email, uniqueness: { message: 'このメールアドレスはすでに登録済みです'}
+    validates :password, presence: { message: 'パスワードは必須項目です'}
+
+    has_many :posts, dependent: :destroy
+    has_many :likes, dependent: :destroy
     has_many :liked_posts, through: :likes, source: :post
-    has_many :active_relationships, class_name: "Relationship", foreign_key: :following_id
+    has_many :active_relationships, class_name: "Relationship", foreign_key: :following_id, dependent: :destroy
     has_many :followings, through: :active_relationships, source: :follower
-    has_many :passive_relationships, class_name: "Relationship", foreign_key: :follower_id
+    has_many :passive_relationships, class_name: "Relationship", foreign_key: :follower_id, dependent: :destroy
     has_many :followers, through: :passive_relationships, source: :following
 
     def followed_by?(user)
