@@ -15,3 +15,6 @@ ClassLength:
 
 LineLength:
   Max: 200
+
+Metrics/CyclomaticComplexity:
+  Max: 12
