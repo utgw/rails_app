@@ -1,46 +1,33 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user, {only: [:show]}
-  before_action :forbid_login_user, {only: [:login, :login_form, :signup, :create]}
-  before_action :ensure_current_user, {only: [:edit, :update]}
+  before_action :authenticate_user, { only: %i[show] }
+  before_action :forbid_login_user, { only: %i[login login_form signup create] }
+  before_action :ensure_current_user, { only: %i[edit update] }
+  before_action :get_following_users_and_followers, { only: %i[show likes] }
 
   def index
     @users = User.all
   end
 
   def show
-    begin
-      @user = User.find(params[:id])
-      @posts = @user.posts.includes(:likes).order(created_at: :desc).page(params[:page]).per(10)
-      @posts_liked_by_current_user = @current_user.likes.pluck(:post_id)
-      @followings = @user.followings
-      @followers = @user.followers
-      @following_count = @followings.count
-      @follower_count = @followers.count
-    rescue ActiveRecord::RecordNotFound
-      flash[:notice] = "該当のユーザーが見つかりませんでした"
-      redirect_to users_index_path
-    rescue
-      flash[:notice] = "プロフィール画面の表示に失敗しました"
-      redirect_to users_index_path
-    end
+    @posts = @user.find_posts(params[:page])
+    @posts_liked_by_current_user = @current_user.likes.pluck(:post_id)
+  rescue ActiveRecord::RecordNotFound
+    flash[:notice] = '該当のユーザーが見つかりませんでした'
+    redirect_to users_index_path
+  rescue StandardError
+    flash[:notice] = 'プロフィール画面の表示に失敗しました'
+    redirect_to users_index_path
   end
 
   def likes
-    begin
-      @user = User.find(params[:id])
-      @liked_posts = @user.liked_posts.includes([:user, :likes]).order("likes.created_at DESC").page(params[:page]).per(10)
-      @posts_liked_by_current_user = @current_user.likes.pluck(:post_id)
-      @followings = @user.followings
-      @followers = @user.followers
-      @following_count = @followings.count
-      @follower_count = @followers.count
-    rescue ActiveRecord::RecordNotFound
-      flash[:notice] = "該当のユーザーが見つかりませんでした"
-      redirect_to users_index_path
-    rescue
-      flash[:notice] = "いいね一覧の表示に失敗しました"
-      redirect_to users_index_path
-    end
+    @liked_posts = @user.find_liked_posts(params[:page])
+    @posts_liked_by_current_user = @current_user.likes.pluck(:post_id)
+  rescue ActiveRecord::RecordNotFound
+    flash[:notice] = '該当のユーザーが見つかりませんでした'
+    redirect_to users_index_path
+  rescue StandardError
+    flash[:notice] = 'いいね一覧の表示に失敗しました'
+    redirect_to users_index_path
   end
 
   def signup
@@ -48,60 +35,53 @@ class UsersController < ApplicationController
   end
 
   def create
-    begin
-      @user = User.new(user_params)
-      @user.save!
-      session[:user_id] = @user.id
-      flash[:notice] = "ユーザー登録が完了しました。"
-      redirect_to("/users/#{@user.id}")
-    rescue ActiveRecord::RecordInvalid
-      render :signup, status: :unprocessable_entity
-    rescue
-      flash[:notice] = "ユーザー登録に失敗しました"
-      redirect_to users_index_path
-    end
+    @user = User.new(user_params)
+    @user.save!
+    session[:user_id] = @user.id
+    flash[:notice] = 'ユーザー登録が完了しました。'
+    redirect_to("/users/#{@user.id}")
+  rescue ActiveRecord::RecordInvalid
+    render :signup, status: :unprocessable_entity
+  rescue StandardError
+    flash[:notice] = 'ユーザー登録に失敗しました'
+    redirect_to users_index_path
   end
 
   def edit
-    begin
-      @user = User.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:notice] = "該当のユーザーが見つかりませんでした"
-      redirect_to users_index_path
-    rescue
-      flash[:notice] = "ユーザーの表示に失敗しました"
-      redirect_to users_index_path
-    end
-  end
-  
-  def update
-    begin
-      @user = User.find(params[:id])
-      @user.update!(user_params)
-      flash[:notice] = "ユーザー情報を変更しました"
-      redirect_to("/users/#{@user.id}")
-    rescue ActiveRecord::RecordNotFound
-      flash[:notice] = "該当のユーザーが見つかりませんでした"
-      redirect_to users_index_path
-    rescue ActiveRecord::RecordInvalid
-      render :edit, status: :unprocessable_entity
-    rescue
-      flash[:notice] = "ユーザー情報の更新に失敗しました"
-      redirect_to users_index_path
-    end
+    @user = User.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    flash[:notice] = '該当のユーザーが見つかりませんでした'
+    redirect_to users_index_path
+  rescue StandardError
+    flash[:notice] = 'ユーザーの表示に失敗しました'
+    redirect_to users_index_path
   end
 
-  def login_form
-  end 
+  def update
+    @user = User.find(params[:id])
+    @user.update!(user_params)
+    flash[:notice] = 'ユーザー情報を変更しました'
+    redirect_to("/users/#{@user.id}")
+  rescue ActiveRecord::RecordNotFound
+    flash[:notice] = '該当のユーザーが見つかりませんでした'
+    redirect_to users_index_path
+  rescue ActiveRecord::RecordInvalid
+    render :edit, status: :unprocessable_entity
+  rescue StandardError
+    flash[:notice] = 'ユーザー情報の更新に失敗しました'
+    redirect_to users_index_path
+  end
+
+  def login_form; end
 
   def login
     @user = User.find_by(email: params[:email])
-    if @user && @user.authenticate(params[:password])
+    if @user&.authenticate(params[:password])
       session[:user_id] = @user.id
-      flash[:notice] = "ログインしました。"
-      redirect_to("/posts/index")
+      flash[:notice] = 'ログインしました。'
+      redirect_to('/posts/index')
     else
-      @error_message = "メールアドレスまたはパスワードが間違っています"
+      @error_message = 'メールアドレスまたはパスワードが間違っています'
       @email = params[:email]
       @password = params[:password]
       render :login_form, status: :unprocessable_entity
@@ -110,40 +90,45 @@ class UsersController < ApplicationController
 
   def logout
     session[:user_id] = nil
-    flash[:notice] = "ログアウトしました。"
-    redirect_to("/login")
+    flash[:notice] = 'ログアウトしました。'
+    redirect_to('/login')
   end
 
   def follow
-    begin
-      user = User.find(params[:id])
-      @users = user.followings
-      @follows_count = @users.count
-    rescue ActiveRecord::RecordNotFound
-      flash[:notice] = "該当のユーザーが見つかりませんでした"
-      redirect_to users_index_path
-    rescue
-      flash[:notice] = "フォロー一覧の表示に失敗しました"
-      redirect_to users_index_path
-    end
+    user = User.find(params[:id])
+    @users = user.followings
+    @follows_count = @users.count
+  rescue ActiveRecord::RecordNotFound
+    flash[:notice] = '該当のユーザーが見つかりませんでした'
+    redirect_to users_index_path
+  rescue StandardError
+    flash[:notice] = 'フォロー一覧の表示に失敗しました'
+    redirect_to users_index_path
   end
 
   def followers
-    begin
-      user = User.find(params[:id])
-      @users = user.followers
-      @followers_count = @users.count
-    rescue ActiveRecord::RecordNotFound
-      flash[:notice] = "該当のユーザーが見つかりませんでした"
-      redirect_to users_index_path
-    rescue
-      flash[:notice] = "フォロワー一覧の表示に失敗しました"
-      redirect_to users_indext_path
-    end
+    user = User.find(params[:id])
+    @users = user.followers
+    @followers_count = @users.count
+  rescue ActiveRecord::RecordNotFound
+    flash[:notice] = '該当のユーザーが見つかりませんでした'
+    redirect_to users_index_path
+  rescue StandardError
+    flash[:notice] = 'フォロワー一覧の表示に失敗しました'
+    redirect_to users_indext_path
   end
 
   private
+
   def user_params
     params.permit(:username, :email, :password, :password_confirmation)
+  end
+
+  def find_following_users_and_followers
+    @user = User.find(params[:id])
+    @followings = @user.followings
+    @followers = @user.followers
+    @following_count = @followings.count
+    @follower_count = @followers.count
   end
 end
